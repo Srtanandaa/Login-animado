@@ -13,7 +13,7 @@ Acesse a versao publicada no Netlify:
 ## Preview Mobile
 
 <p align="center">
-  <img src="public/images/preview-mobile.png" alt="Preview mobile da tela de login animada" width="320" />
+  <img src="public/images/preview-mobile.jpg" alt="Preview mobile da tela de login animada" width="320" />
 </p>
 
 ## Sobre o Projeto
