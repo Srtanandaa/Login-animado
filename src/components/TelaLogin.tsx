@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { type FocusEvent, useState } from "react";
 import { Apple, Lock, Mail, Rocket } from "lucide-react";
 import { CampoEntrada } from "@/components/InputField";
 import { RobotMascot } from "@/components/MascoteRobo";
@@ -10,11 +10,28 @@ type FocusedField = "email" | "password" | null;
 
 export function LoginPage() {
   const [focusedField, setFocusedField] = useState<FocusedField>(null);
+  const mobileMascotClass = `relative order-first sticky top-3 z-20 mb-3 min-h-0 overflow-hidden rounded-[1.5rem] bg-[#071a2f] shadow-2xl shadow-[#050713]/45 transition-[height,transform] duration-300 sm:top-4 lg:hidden ${
+    focusedField ? "h-[128px] translate-y-0 sm:h-[190px]" : "h-[190px] sm:h-[260px]"
+  }`;
+
+  function handleFieldFocus(field: Exclude<FocusedField, null>) {
+    return (event: FocusEvent<HTMLInputElement>) => {
+      const input = event.currentTarget;
+
+      setFocusedField(field);
+      window.setTimeout(() => {
+        input.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 120);
+      window.setTimeout(() => {
+        input.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 420);
+    };
+  }
 
   return (
     <main className="min-h-svh overflow-y-auto bg-[radial-gradient(circle_at_20%_15%,#233b63_0,#111827_38%,#080b16_72%,#050713_100%)] px-3 py-3 text-white sm:px-6 sm:py-4 lg:h-screen lg:overflow-hidden lg:px-8">
       <section className="mx-auto flex min-h-[calc(100svh-1.5rem)] w-full max-w-6xl items-center justify-center sm:min-h-[calc(100svh-2rem)] lg:h-full">
-        <div className="grid w-full overflow-hidden rounded-3xl border border-cyan-200/10 bg-[#070b16] p-3 shadow-2xl shadow-cyan-950/40 sm:rounded-[2.5rem] sm:p-5 lg:h-full lg:max-h-[760px] lg:grid-cols-[1fr_1.08fr] lg:p-6">
+        <div className="grid w-full overflow-visible rounded-3xl border border-cyan-200/10 bg-[#070b16] p-3 shadow-2xl shadow-cyan-950/40 sm:rounded-[2.5rem] sm:p-5 lg:h-full lg:max-h-[760px] lg:grid-cols-[1fr_1.08fr] lg:overflow-hidden lg:p-6">
           <div className="relative flex min-h-0 flex-col px-3 py-3 sm:px-8 lg:px-10 lg:py-7">
             <div className="pointer-events-none absolute inset-0 overflow-hidden">
               <span className="absolute left-[18%] top-[15%] size-1 rounded-full bg-cyan-100/70" />
@@ -38,7 +55,7 @@ export function LoginPage() {
               </p>
             </div>
 
-            <form className="relative z-10 w-full pb-2 pt-6 sm:max-w-[350px] sm:pt-10 lg:mt-auto">
+            <form className="relative z-10 w-full pb-[max(1rem,env(safe-area-inset-bottom))] pt-6 transition-transform duration-300 focus-within:-translate-y-2 sm:max-w-[350px] sm:pt-10 lg:mt-auto lg:pb-2 lg:focus-within:translate-y-0">
               <p className="mb-3 text-[0.68rem] font-black uppercase tracking-[0.18em] text-cyan-200/70 sm:text-xs sm:tracking-[0.28em]">
                 Pronto para a missao?
               </p>
@@ -68,7 +85,7 @@ export function LoginPage() {
                   icone={Mail}
                   type="email"
                   placeholder="Seu e-mail"
-                  onFocus={() => setFocusedField("email")}
+                  onFocus={handleFieldFocus("email")}
                   onBlur={() => setFocusedField(null)}
                 />
               </div>
@@ -80,7 +97,7 @@ export function LoginPage() {
                   icone={Lock}
                   type="password"
                   placeholder="Sua senha"
-                  onFocus={() => setFocusedField("password")}
+                  onFocus={handleFieldFocus("password")}
                   onBlur={() => setFocusedField(null)}
                 />
               </div>
@@ -135,7 +152,7 @@ export function LoginPage() {
             <RobotMascot mode={focusedField} />
           </div>
 
-          <div className="relative order-first mb-3 h-[180px] min-h-0 overflow-hidden rounded-[1.5rem] bg-[#071a2f] sm:h-[260px] lg:hidden">
+          <div className={mobileMascotClass}>
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_32%,rgba(155,221,212,0.34),transparent_24%),radial-gradient(circle_at_50%_60%,rgba(54,116,168,0.28),transparent_34%),linear-gradient(180deg,#0b2742_0%,#071a2f_52%,#04111f_100%)]" />
             <div className="absolute left-1/2 top-[17%] h-56 w-56 -translate-x-1/2 rounded-full bg-cyan-200/20 blur-3xl" />
             <div className="absolute left-1/2 top-[30%] h-32 w-64 -translate-x-1/2 rounded-full bg-cyan-100/10 blur-2xl" />
@@ -170,7 +187,9 @@ export function LoginPage() {
             <span className="absolute right-[14%] bottom-[34%] size-1.5 animate-pulse rounded-full bg-white/45 [animation-delay:1000ms]" />
             <span className="absolute left-[15%] top-[44%] size-1 animate-pulse rounded-full bg-cyan-100/60 [animation-delay:1300ms]" />
             <span className="absolute left-[58%] top-[16%] size-1 animate-pulse rounded-full bg-white/60 [animation-delay:1700ms]" />
-            <RobotMascot mode={focusedField} />
+            <div className="absolute inset-0 translate-y-1 scale-[1.08] sm:scale-100">
+              <RobotMascot mode={focusedField} />
+            </div>
           </div>
         </div>
       </section>
