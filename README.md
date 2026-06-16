@@ -4,6 +4,12 @@ Uma tela de login responsiva criada com foco em microinteracoes, personalidade v
 
 ![Preview desktop](public/images/preview-desktop.png)
 
+## Acesso Rapido
+
+Acesse a versao publicada no Netlify:
+
+[https://login-aanimado.netlify.app](https://login-aanimado.netlify.app)
+
 ## Preview Mobile
 
 <p align="center">
@@ -78,9 +84,3 @@ src/
   hooks/
     usePosicaoMouse.ts
 ```
-
-## Ideia Para Post
-
-Criei uma tela de login animada em Next.js com um mascote robo interativo. A ideia foi sair do formulario estatico e explorar pequenas reacoes visuais: quando o usuario interage com e-mail ou senha, o robo muda de comportamento. Tambem adaptei a experiencia mobile para priorizar a animacao, evitando que o teclado cubra a tela durante a demonstracao.
-
-Foi um exercicio de frontend com foco em responsividade, microinteracoes, componentes reutilizaveis e acabamento visual.
