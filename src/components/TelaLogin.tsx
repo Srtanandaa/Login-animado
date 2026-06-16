@@ -1,6 +1,6 @@
 "use client";
 
-import { type FocusEvent, useState } from "react";
+import { type FocusEvent, useEffect, useState } from "react";
 import { Apple, Lock, Mail, Rocket } from "lucide-react";
 import { CampoEntrada } from "@/components/InputField";
 import { RobotMascot } from "@/components/MascoteRobo";
@@ -10,15 +10,31 @@ type FocusedField = "email" | "password" | null;
 
 export function LoginPage() {
   const [focusedField, setFocusedField] = useState<FocusedField>(null);
+  const [lockMobileKeyboard, setLockMobileKeyboard] = useState(false);
   const mobileMascotClass = `relative order-first sticky top-3 z-20 mb-3 min-h-0 overflow-hidden rounded-[1.5rem] bg-[#071a2f] shadow-2xl shadow-[#050713]/45 transition-[height,transform] duration-300 sm:top-4 lg:hidden ${
     focusedField ? "h-[128px] translate-y-0 sm:h-[190px]" : "h-[190px] sm:h-[260px]"
   }`;
+
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 1023px), (pointer: coarse)");
+    const updateMobileMode = () => setLockMobileKeyboard(query.matches);
+
+    updateMobileMode();
+    query.addEventListener("change", updateMobileMode);
+
+    return () => query.removeEventListener("change", updateMobileMode);
+  }, []);
 
   function handleFieldFocus(field: Exclude<FocusedField, null>) {
     return (event: FocusEvent<HTMLInputElement>) => {
       const input = event.currentTarget;
 
       setFocusedField(field);
+
+      if (lockMobileKeyboard) {
+        return;
+      }
+
       window.setTimeout(() => {
         input.scrollIntoView({ behavior: "smooth", block: "center" });
       }, 120);
@@ -85,6 +101,8 @@ export function LoginPage() {
                   icone={Mail}
                   type="email"
                   placeholder="Seu e-mail"
+                  inputMode={lockMobileKeyboard ? "none" : "email"}
+                  readOnly={lockMobileKeyboard}
                   onFocus={handleFieldFocus("email")}
                   onBlur={() => setFocusedField(null)}
                 />
@@ -97,6 +115,8 @@ export function LoginPage() {
                   icone={Lock}
                   type="password"
                   placeholder="Sua senha"
+                  inputMode={lockMobileKeyboard ? "none" : undefined}
+                  readOnly={lockMobileKeyboard}
                   onFocus={handleFieldFocus("password")}
                   onBlur={() => setFocusedField(null)}
                 />
